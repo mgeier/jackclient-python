@@ -3023,3 +3023,16 @@ def _check(error_code, msg):
     """Check error code and raise JackError if non-zero."""
     if error_code:
         raise JackErrorCode(msg, error_code)
+
+
+# TODO: lazy-initialize libjackserver
+_libsrvname = _find_library('jackserver')
+_libsrv = _ffi.dlopen(_libsrvname)
+
+class Server:
+
+    def __init__(self):
+        ptr = _libsrv.jackctl_server_create2(_ffi.NULL, _ffi.NULL, _ffi.NULL)
+        if not ptr:
+            raise JackError('Could not create server')
+        self._ptr = _ffi.gc(ptr, _libsrv.jackctl_server_destroy)

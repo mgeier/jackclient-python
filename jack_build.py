@@ -288,6 +288,18 @@ extern const char* JACK_METADATA_ORDER;
 extern const char* JACK_METADATA_PORT_GROUP;
 extern const char* JACK_METADATA_PRETTY_NAME;
 extern const char* JACK_METADATA_SIGNAL_TYPE;
+
+/* control.h */
+
+typedef struct jackctl_server jackctl_server_t;
+jackctl_server_t* jackctl_server_create(
+    bool (*on_device_acquire)(const char* device_name),
+    void (*on_device_release)(const char* device_name));
+void jackctl_server_destroy(jackctl_server_t* server);
+jackctl_server_t* jackctl_server_create2(
+    bool (*on_device_acquire)(const char* device_name),
+    void (*on_device_release)(const char* device_name),
+    void (*on_device_reservation_loop)(void));
 """)
 
 # Packed structure
