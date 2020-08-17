@@ -18,6 +18,8 @@ jobs:
           jack: jackd1
         - os: macos-latest
           python-version: 3.8
+        - os: windows-latest
+          python-version: 3.8
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install JACK on Ubuntu
@@ -29,9 +31,13 @@ jobs:
       if: startsWith(matrix.os, 'macos')
       run: |
         brew install jack
+    - name: Install JACK on Windows
+      if: startsWith(matrix.os, 'windows')
+      run: |
+        choco install --no-progress jack
     - name: Start jackd with "dummy" backend
       run: |
-        jackd --no-realtime -d dummy &
+        jackd --no-realtime -d dummy
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
