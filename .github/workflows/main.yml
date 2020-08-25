@@ -34,7 +34,8 @@ jobs:
     - name: Install JACK on Windows
       if: startsWith(matrix.os, 'windows')
       run: |
-        choco install --no-progress jack
+        #choco install --no-progress jack
+        vcpkg install jack2
     - name: Start jackd with "dummy" backend
       run: |
         jackd --no-realtime -d dummy
